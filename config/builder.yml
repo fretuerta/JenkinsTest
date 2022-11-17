@@ -1,0 +1,27 @@
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: build-ada-java
+  template:
+    metadata:
+      labels:
+        app: build-ada-java
+    spec:
+      initContainers:
+        - name: cots-image
+          image: fretuerta/cots-image
+          volumeMounts:
+            - mountPath: /mnt/COTS
+              name: cots-volume
+      containers:
+        - name: build-ada-java
+          image: fretuerta/nm-cicd-nocots
+          volumeMounts:
+            - mountPath: /mnt/COTS
+              name: cots-volume
+      volumes:
+        - name: cots-volume
+          emptyDir: {}
+      hostNetwork: true
+      dnsPolicy: Default
